@@ -15,7 +15,7 @@ public abstract class SubCommand {
     @Nullable
     public abstract String getPermission();
 
-    @NotNull
+    @Nullable
     public abstract List<String> parseTabCompletion(IslandNPC plugin, CommandSender sender, String[] args);
 
     public abstract void execute(IslandNPC plugin, CommandSender sender, String[] args);

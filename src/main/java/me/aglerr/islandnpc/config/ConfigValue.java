@@ -20,9 +20,6 @@ public class ConfigValue {
     public static boolean LOOK_CLOSE;
     public static boolean ANCHOR;
 
-    public static String INVENTORY_TITLE;
-    public static int INVENTORY_SiZE;
-
     public static List<String> CLICK_COMMANDS;
 
     public static String NO_PERMISSION_MESSAGE;
@@ -36,7 +33,6 @@ public class ConfigValue {
 
     public static void initialize(){
         FileConfiguration config = ConfigManager.CONFIG.getConfig();
-        FileConfiguration inventory = ConfigManager.INVENTORY.getConfig();
 
         NPC_ENTITY_TYPE = config.getString("islandNPC.entityType");
         NPC_SKIN = config.getString("islandNPC.skinName");
@@ -51,9 +47,6 @@ public class ConfigValue {
         DISABLE_GRAVITY = config.getBoolean("npcOptions.disableGravity");
         LOOK_CLOSE = config.getBoolean("npcOptions.lookClose");
         ANCHOR = config.getBoolean("npcOptions.anchor");
-
-        INVENTORY_TITLE = inventory.getString("title");
-        INVENTORY_SiZE = inventory.getInt("size");
 
         CLICK_COMMANDS = config.getStringList("npcOptions.clickCommands");
 

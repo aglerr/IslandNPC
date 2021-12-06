@@ -6,7 +6,6 @@ import me.aglerr.islandnpc.commands.SubCommand;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.DependencyHandler;
 import me.aglerr.islandnpc.utils.Utils;
-import me.aglerr.lazylibs.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -30,12 +29,10 @@ public class ResetCommand extends SubCommand {
     }
 
     @Override
-    public @NotNull List<String> parseTabCompletion(IslandNPC plugin, CommandSender sender, String[] args) {
-
+    public List<String> parseTabCompletion(IslandNPC plugin, CommandSender sender, String[] args) {
         if(args.length == 2){
-            return Common.getOnlinePlayersByName();
+            return null;
         }
-
         return new ArrayList<>();
     }
 
@@ -43,34 +40,25 @@ public class ResetCommand extends SubCommand {
     public void execute(IslandNPC plugin, CommandSender sender, String[] args) {
 
         if(args.length < 2){
-            sender.sendMessage(Common.color("&cUsage: /islandnpc reset <player>"));
+            sender.sendMessage(Utils.color("&cUsage: /islandnpc reset <player>"));
             return;
         }
 
         Player player = Bukkit.getPlayer(args[1]);
         if(player == null){
-            sender.sendMessage(Common.color(ConfigValue.INVALID_PLAYER));
+            sender.sendMessage(Utils.color(ConfigValue.INVALID_PLAYER));
             return;
         }
 
         if(DependencyHandler.isSuperiorSkyblock()){
             Island island = Utils.getSuperiorIsland(player);
             if(island == null){
-                sender.sendMessage(Common.color(ConfigValue.TARGET_NO_ISLAND));
+                sender.sendMessage(Utils.color(ConfigValue.TARGET_NO_ISLAND));
                 return;
             }
             plugin.getNPCTracker().deleteNPCFromIsland(island.getUniqueId());
-            plugin.getNPCTracker().createNPC(island.getUniqueId(), island.getTeleportLocation(World.Environment.NORMAL), true);
-        }
-
-        if(DependencyHandler.isBentoBox()){
-            world.bentobox.bentobox.database.objects.Island island = Utils.getBentoIsland(player);
-            if(island == null){
-                sender.sendMessage(Common.color(ConfigValue.TARGET_NO_ISLAND));
-                return;
-            }
-            plugin.getNPCTracker().deleteNPCFromIsland(island.getUniqueId());
-            plugin.getNPCTracker().createNPC(island.getUniqueId(), island.getSpawnPoint(World.Environment.NORMAL), true);
+            Bukkit.getScheduler().runTaskLater(plugin, () ->
+                    plugin.getNPCTracker().createNPC(island.getUniqueId(), island.getTeleportLocation(World.Environment.NORMAL), true), 20L);
         }
 
     }

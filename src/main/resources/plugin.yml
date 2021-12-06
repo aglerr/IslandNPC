@@ -2,8 +2,8 @@ name: IslandNPC
 version: 1.0
 api-version: 1.13
 main: me.aglerr.islandnpc.IslandNPC
-depend: [Citizens, NBTAPI]
-softdepend: [PlaceholderAPI, SuperiorSkyblock2, BentoBox]
+depend: [Citizens]
+softdepend: [PlaceholderAPI, SuperiorSkyblock2]
 
 commands:
   islandnpc:

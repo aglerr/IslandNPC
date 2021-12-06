@@ -3,7 +3,7 @@
 # - The offset is a location that is subtracted from the spawn point
 islandNPC:
   entityType: VILLAGER
-  skinName: "Abstrxct_"
+  skinName: "aglerr"
   hologram:
     height: 0.3
     lines:
@@ -13,6 +13,15 @@ islandNPC:
     x: 1
     y: 0
     z: -1
+
+moveNPCItem:
+  material: VILLAGER_SPAWN_EGG
+  name: "&eMove Barry"
+  customModelData: 0
+  glowing: true
+  lore:
+    - "&7Place this anywhere on your"
+    - "&7island to move Barry."
 
 npcOptions:
   disableGravity: true

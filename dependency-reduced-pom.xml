@@ -27,8 +27,12 @@
         <configuration>
           <relocations>
             <relocation>
-              <pattern>me.aglerr.lazylibs</pattern>
-              <shadedPattern>me.aglerr.islandnpc.lazylibs</shadedPattern>
+              <pattern>de.tr7zw.changeme.nbtapi</pattern>
+              <shadedPattern>me.aglerr.islandnpc.nbtapi</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.cryptomorin.xseries</pattern>
+              <shadedPattern>me.aglerr.islandnpc.xseries</shadedPattern>
             </relocation>
           </relocations>
         </configuration>
@@ -61,7 +65,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.17.1-R0.1-SNAPSHOT</version>
+      <version>1.18-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -71,26 +75,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>world.bentobox</groupId>
-      <artifactId>bentobox</artifactId>
-      <version>1.16.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
       <version>2.10.10</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>de.tr7zw</groupId>
-      <artifactId>item-nbt-api-plugin</artifactId>
-      <version>2.8.0</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
-  <properties>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
-  </properties>
 </project>

@@ -1,82 +1,37 @@
 package me.aglerr.islandnpc.data;
 
-import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
-import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
+import com.bgsoftware.superiorskyblock.api.island.Island;
 import me.aglerr.islandnpc.config.ConfigManager;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.DependencyHandler;
 import me.aglerr.islandnpc.utils.Utils;
-import me.aglerr.lazylibs.libs.Common;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.*;
 import net.citizensnpcs.util.Anchor;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import world.bentobox.bentobox.BentoBox;
-import world.bentobox.bentobox.api.addons.GameModeAddon;
-import world.bentobox.bentobox.api.user.User;
-import world.bentobox.bentobox.database.objects.Island;
 
 import java.util.*;
 
 public class NPCTracker {
 
     private final Map<UUID, Integer> SislandNPCs = new HashMap<>();
-    private final Map<String, Integer> BislandNPCs = new HashMap<>();
 
     public boolean isInteractingOwnNPC(NPC npc, Player player){
         if(DependencyHandler.isSuperiorSkyblock()){
-            SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(player);
-            if(superiorPlayer.getIsland() == null){
+            Island island = Utils.getSuperiorIsland(player);
+            if(island == null ||
+                !SislandNPCs.containsKey(island.getUniqueId())){
                 return false;
             }
-            if(!SislandNPCs.containsKey(superiorPlayer.getIsland().getUniqueId())){
-                return false;
-            }
-            int ownNPC = SislandNPCs.get(superiorPlayer.getIsland().getUniqueId());
-            return npc.getId() == ownNPC;
-        }
-        if(DependencyHandler.isBentoBox()){
-            User user = BentoBox.getInstance().getPlayersManager().getUser(player.getUniqueId());
-            World world = null;
-
-            for(GameModeAddon gameModeAddon : BentoBox.getInstance().getAddonsManager().getGameModeAddons()){
-                System.out.println("Gamemode: " + gameModeAddon.getDescription().getName());
-                if(!gameModeAddon.getDescription().getName().equalsIgnoreCase("BSkyblock")) {
-                    continue;
-                }
-                world = gameModeAddon.getOverWorld();
-            }
-            if(world == null){
-                return false;
-            }
-            Island island = BentoBox.getInstance().getIslandsManager().getIsland(world, user);
-            if(island == null){
-                return false;
-            }
-            if(!BislandNPCs.containsKey(island.getUniqueId())){
-                return false;
-            }
-            int ownNPC = BislandNPCs.get(island.getUniqueId());
-            return npc.getId() == ownNPC;
+            return npc.getId() == SislandNPCs.get(island.getUniqueId());
         }
         return false;
-    }
-
-    public void moveNPC(String uuid, Location location){
-        // If the island doesn't have NPC, just return
-        if(!BislandNPCs.containsKey(uuid)){
-            return;
-        }
-        // Get the NPC object
-        NPC npc = CitizensAPI.getNPCRegistry().getById(BislandNPCs.get(uuid));
-        npc.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
 
     public void moveNPC(UUID uuid, Location location){
@@ -89,18 +44,6 @@ public class NPCTracker {
         npc.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
 
-    public void createNPC(String uuid, Location location, boolean modify){
-        // If the island already have npc, stop the code
-        if(BislandNPCs.containsKey(uuid)){
-            return;
-        }
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.valueOf(ConfigValue.NPC_ENTITY_TYPE), getName());
-        BislandNPCs.put(uuid, npc.getId());
-        Location finalLocation = modify ? location.add(getNumber(ConfigValue.OFFSET_X), getNumber(ConfigValue.OFFSET_Y), getNumber(ConfigValue.OFFSET_Z)) : location;
-        npc.spawn(finalLocation);
-        addNPCDefaultTraits(npc);
-    }
-
     public void createNPC(UUID uuid, Location location, boolean modify){
         // If the island already have npc, stop the code
         if(SislandNPCs.containsKey(uuid)){
@@ -108,24 +51,12 @@ public class NPCTracker {
         }
         // Create the NPC and teleport it to the desired location
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.valueOf(ConfigValue.NPC_ENTITY_TYPE), getName());
-        SislandNPCs.put(uuid, npc.getId());
-        Location finalLocation = modify ? location.add(getNumber(ConfigValue.OFFSET_X), getNumber(ConfigValue.OFFSET_Y), getNumber(ConfigValue.OFFSET_Z)) : location;
+        Location finalLocation = modify ?
+                location.add(getNumber(ConfigValue.OFFSET_X), getNumber(ConfigValue.OFFSET_Y), getNumber(ConfigValue.OFFSET_Z)) :
+                location;
         npc.spawn(finalLocation);
         addNPCDefaultTraits(npc);
-    }
-
-    public void deleteNPCFromIsland(String uuid){
-        // If the island doesn't have any NPC, just stop the code
-        if(!BislandNPCs.containsKey(uuid)){
-            return;
-        }
-        // If the island has NPC tracked but the NPC doesn't exist, stop the code
-        NPC npc = CitizensAPI.getNPCRegistry().getById(BislandNPCs.get(uuid));
-        if(npc == null){
-            return;
-        }
-        npc.destroy();
-        BislandNPCs.remove(uuid);
+        SislandNPCs.put(uuid, npc.getId());
     }
 
     public void deleteNPCFromIsland(UUID uuid){
@@ -144,42 +75,33 @@ public class NPCTracker {
 
     public void saveIslandNPCs(){
         long startTime = System.currentTimeMillis();
-        Common.log(ChatColor.RESET, "&aTrying to save all Island NPCs");
+        Utils.log("&rTrying to save all Island NPC(s)");
 
         FileConfiguration config = ConfigManager.DATA.getConfig();
         SislandNPCs.forEach((uuid, npcId) -> {
-            config.set("data." + uuid.toString(), npcId);
-        });
-        BislandNPCs.forEach((uuid, npcId) -> {
-            config.set("bento." + uuid, npcId);
+            config.set("ssb." + uuid.toString(), npcId);
         });
         ConfigManager.DATA.saveConfig();
 
         long timePassed = startTime - System.currentTimeMillis();
-        Common.log(ChatColor.RESET, "&aSuccessfully saved all Island NPCs (took {ms}ms)"
+        Utils.log("&rSuccessfully saved all Island NPC(s) - took {ms}ms"
                 .replace("{ms}", timePassed + ""));
     }
 
     public void loadIslandNPCs(){
         long startTime = System.currentTimeMillis();
-        Common.log(ChatColor.RESET, "&aTrying to load all Island NPCs");
+        Utils.log("&rTrying to load all Island NPC(s)");
 
         FileConfiguration config = ConfigManager.DATA.getConfig();
-        if(config.isConfigurationSection("data")){
-            for(String uuid : config.getConfigurationSection("data").getKeys(false)){
-                int npcId = config.getInt("data." + uuid);
+        if(config.isConfigurationSection("ssb")){
+            for(String uuid : config.getConfigurationSection("ssb").getKeys(false)){
+                int npcId = config.getInt("ssb." + uuid);
                 SislandNPCs.put(UUID.fromString(uuid), npcId);
-            }
-        }
-        if(config.isConfigurationSection("bento")){
-            for(String uuid : config.getConfigurationSection("bento").getKeys(false)){
-                int npcId = config.getInt("bento." + uuid);
-                BislandNPCs.put(uuid, npcId);
             }
         }
 
         long timePassed = startTime - System.currentTimeMillis();
-        Common.log(ChatColor.RESET, "&aSuccessfully loaded all Island NPCs (took {ms}ms)"
+        Utils.log("&rSuccessfully loaded all Island NPC(s) - took {ms}ms"
                 .replace("{ms}", timePassed + ""));
     }
 
@@ -218,12 +140,6 @@ public class NPCTracker {
 
     public void reloadAllNPCs(){
         SislandNPCs.forEach((uuid, id) -> {
-            NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-            if(npc != null){
-                addNPCDefaultTraits(npc);
-            }
-        });
-        BislandNPCs.forEach((uuid, id) -> {
             NPC npc = CitizensAPI.getNPCRegistry().getById(id);
             if(npc != null){
                 addNPCDefaultTraits(npc);

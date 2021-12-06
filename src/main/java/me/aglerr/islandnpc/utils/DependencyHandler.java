@@ -1,17 +1,17 @@
 package me.aglerr.islandnpc.utils;
 
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.islandnpc.IslandNPC;
+import me.aglerr.islandnpc.events.SuperiorSkyblockEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 
 public class DependencyHandler {
 
-    private static boolean PLACEHOLDER_API = false;
-    private static boolean SUPERIOR_SKYBLOCK = false;
-    private static boolean BENTO_BOX = false;
+    private static boolean PLACEHOLDER_API;
+    private static boolean SUPERIOR_SKYBLOCK;
 
-    public static void findDependency(){
+    public static void loadDependencies(IslandNPC plugin){
 
         PluginManager pm = Bukkit.getPluginManager();
 
@@ -21,16 +21,11 @@ public class DependencyHandler {
 
         if(pm.getPlugin("SuperiorSkyblock2") != null){
             SUPERIOR_SKYBLOCK = true;
-            Common.log(ChatColor.RESET, "Found SuperiorSkyblock2, registering events...");
-            Common.log(ChatColor.RESET, "- IslandSchematicPasteEvent");
-            Common.log(ChatColor.RESET, "- IslandDisbandEvent");
-        }
-        if(pm.getPlugin("BentoBox") != null){
-            BENTO_BOX = true;
-            Common.log(ChatColor.RESET, "Found BentoBox, registering events...");
-            Common.log(ChatColor.RESET, "- IslandCreatedEvent");
-            Common.log(ChatColor.RESET, "- IslandDeleteEvent");
-            Common.log(ChatColor.RESET, "- IslandResettedEvent");
+            Utils.log("Found SuperiorSkyblock2, registering events...");
+            Utils.log("- IslandSchematicPasteEvent");
+            Utils.log("- IslandDisbandEvent");
+
+            pm.registerEvents(new SuperiorSkyblockEvents(plugin.getNPCTracker()), plugin);
         }
 
     }
@@ -42,10 +37,5 @@ public class DependencyHandler {
     public static boolean isSuperiorSkyblock(){
         return SUPERIOR_SKYBLOCK;
     }
-
-    public static boolean isBentoBox(){
-        return BENTO_BOX;
-    }
-
 
 }

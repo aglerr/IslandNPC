@@ -3,7 +3,7 @@ package me.aglerr.islandnpc.commands.subcommands;
 import me.aglerr.islandnpc.IslandNPC;
 import me.aglerr.islandnpc.commands.SubCommand;
 import me.aglerr.islandnpc.config.ConfigValue;
-import me.aglerr.lazylibs.libs.Common;
+import me.aglerr.islandnpc.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,10 +30,8 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public void execute(IslandNPC plugin, CommandSender sender, String[] args) {
-
         plugin.reloadEverything();
-        sender.sendMessage(Common.color(ConfigValue.RELOAD_MESSAGE));
-
+        sender.sendMessage(Utils.color(ConfigValue.RELOAD_MESSAGE));
     }
 
 }
