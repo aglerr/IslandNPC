@@ -4,6 +4,7 @@
 *.iml
 *.ipr
 *.iws
+dependency-reduced-pom.xml
 
 # IntelliJ
 out/
