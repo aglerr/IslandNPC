@@ -17,15 +17,11 @@ public class SuperiorSkyblockEvents implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onIslandSchematicPasted(IslandSchematicPasteEvent event){
-        System.out.println("IslandSchematicPasteEvent is being called");
-        Bukkit.broadcastMessage("Creating island npc for " + event.getIsland().getOwner().getName());
         npcTracker.createNPC(event.getIsland().getUniqueId(), event.getLocation().clone(), true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onIslandDeletion(IslandDisbandEvent event){
-        System.out.println("IslandDisbandEvent is being called");
-        Bukkit.broadcastMessage("Deleting island npc for " + event.getIsland().getOwner().getName());
         npcTracker.deleteNPCFromIsland(event.getIsland().getUniqueId());
     }
 
