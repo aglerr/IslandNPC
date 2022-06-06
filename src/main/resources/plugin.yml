@@ -1,9 +1,9 @@
 name: IslandNPC
-version: 1.0
+version: 1.1
 api-version: 1.13
 main: me.aglerr.islandnpc.IslandNPC
-depend: [Citizens]
-softdepend: [PlaceholderAPI, SuperiorSkyblock2]
+depend: [Citizens, SuperiorSkyblock2]
+softdepend: [ PlaceholderAPI ]
 
 commands:
   islandnpc:
