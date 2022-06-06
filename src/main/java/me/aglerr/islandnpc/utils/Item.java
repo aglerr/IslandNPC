@@ -1,8 +1,9 @@
 package me.aglerr.islandnpc.utils;
 
-import com.cryptomorin.xseries.XMaterial;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.aglerr.islandnpc.config.ConfigManager;
+import me.aglerr.mclibs.libs.ItemBuilder;
+import me.aglerr.mclibs.xseries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;

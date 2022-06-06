@@ -5,6 +5,7 @@ import me.aglerr.islandnpc.config.ConfigManager;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.DependencyHandler;
 import me.aglerr.islandnpc.utils.Utils;
+import me.aglerr.mclibs.libs.Common;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.*;
@@ -75,7 +76,7 @@ public class NPCTracker {
 
     public void saveIslandNPCs(){
         long startTime = System.currentTimeMillis();
-        Utils.log("&rTrying to save all Island NPC(s)");
+        Common.log("&rTrying to save all Island NPC(s)");
 
         FileConfiguration config = ConfigManager.DATA.getConfig();
         SislandNPCs.forEach((uuid, npcId) -> {
@@ -84,13 +85,13 @@ public class NPCTracker {
         ConfigManager.DATA.saveConfig();
 
         long timePassed = startTime - System.currentTimeMillis();
-        Utils.log("&rSuccessfully saved all Island NPC(s) - took {ms}ms"
+        Common.log("&rSuccessfully saved all Island NPC(s) - took {ms}ms"
                 .replace("{ms}", timePassed + ""));
     }
 
     public void loadIslandNPCs(){
         long startTime = System.currentTimeMillis();
-        Utils.log("&rTrying to load all Island NPC(s)");
+        Common.log("&rTrying to load all Island NPC(s)");
 
         FileConfiguration config = ConfigManager.DATA.getConfig();
         if(config.isConfigurationSection("ssb")){
@@ -101,7 +102,7 @@ public class NPCTracker {
         }
 
         long timePassed = startTime - System.currentTimeMillis();
-        Utils.log("&rSuccessfully loaded all Island NPC(s) - took {ms}ms"
+        Common.log("&rSuccessfully loaded all Island NPC(s) - took {ms}ms"
                 .replace("{ms}", timePassed + ""));
     }
 

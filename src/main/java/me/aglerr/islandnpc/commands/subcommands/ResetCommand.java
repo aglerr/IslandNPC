@@ -6,6 +6,7 @@ import me.aglerr.islandnpc.commands.SubCommand;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.DependencyHandler;
 import me.aglerr.islandnpc.utils.Utils;
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -40,20 +41,20 @@ public class ResetCommand extends SubCommand {
     public void execute(IslandNPC plugin, CommandSender sender, String[] args) {
 
         if(args.length < 2){
-            sender.sendMessage(Utils.color("&cUsage: /islandnpc reset <player>"));
+            Common.sendMessage(sender, "&cUsage: /islandnpc reset (player)");
             return;
         }
 
         Player player = Bukkit.getPlayer(args[1]);
         if(player == null){
-            sender.sendMessage(Utils.color(ConfigValue.INVALID_PLAYER));
+            Common.sendMessage(sender, ConfigValue.INVALID_PLAYER);
             return;
         }
 
         if(DependencyHandler.isSuperiorSkyblock()){
             Island island = Utils.getSuperiorIsland(player);
             if(island == null){
-                sender.sendMessage(Utils.color(ConfigValue.TARGET_NO_ISLAND));
+                Common.sendMessage(sender, ConfigValue.TARGET_NO_ISLAND);
                 return;
             }
             plugin.getNPCTracker().deleteNPCFromIsland(island.getUniqueId());

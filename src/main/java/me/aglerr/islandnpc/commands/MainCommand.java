@@ -7,6 +7,7 @@ import me.aglerr.islandnpc.commands.subcommands.ReloadCommand;
 import me.aglerr.islandnpc.commands.subcommands.ResetCommand;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.Utils;
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,7 +47,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         }
         if(subCommand.getPermission() != null){
             if(!(sender.hasPermission(subCommand.getPermission()))){
-                sender.sendMessage(Utils.color(ConfigValue.NO_PERMISSION_MESSAGE));
+                Common.sendMessage(sender, ConfigValue.NO_PERMISSION_MESSAGE);
                 return true;
             }
         }
@@ -81,7 +82,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     private void sendHelpMessages(CommandSender sender){
         ConfigValue.HELP_MESSAGES.forEach(message ->
-                sender.sendMessage(Utils.color(message)));
+                Common.sendMessage(sender, message));
     }
 
 }

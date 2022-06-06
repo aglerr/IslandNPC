@@ -6,9 +6,10 @@ import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.data.NPCTracker;
 import me.aglerr.islandnpc.events.MoveNPCEvent;
 import me.aglerr.islandnpc.events.NPCInteractEvent;
-import me.aglerr.islandnpc.events.SuperiorSkyblockEvents;
 import me.aglerr.islandnpc.utils.DependencyHandler;
 import me.aglerr.islandnpc.utils.Item;
+import me.aglerr.mclibs.MCLibs;
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +19,10 @@ public class IslandNPC extends JavaPlugin {
 
     @Override
     public void onEnable(){
+        // MCLibs Init
+        MCLibs.init(this);
+        Common.setPrefix("[IslandNPC]");
+
         ConfigManager.initialize();
         ConfigValue.initialize();
         Item.init();
@@ -44,6 +49,7 @@ public class IslandNPC extends JavaPlugin {
 
     private void registerEvents(){
         DependencyHandler.loadDependencies(this);
+
         Bukkit.getPluginManager().registerEvents(new NPCInteractEvent(this), this);
         Bukkit.getPluginManager().registerEvents(new MoveNPCEvent(npcTracker), this);
     }

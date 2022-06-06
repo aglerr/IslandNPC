@@ -5,6 +5,7 @@ import me.aglerr.islandnpc.commands.SubCommand;
 import me.aglerr.islandnpc.config.ConfigValue;
 import me.aglerr.islandnpc.utils.Item;
 import me.aglerr.islandnpc.utils.Utils;
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,10 +38,10 @@ public class MoveNPCCommand extends SubCommand {
     @Override
     public void execute(IslandNPC plugin, CommandSender sender, String[] args) {
         if(args.length == 1 && !(sender instanceof Player)){
-            Utils.sendMessage(sender, "&cUsage: /islandnpc movenpc (player)");
+            Common.sendMessage(sender, "&cUsage: /islandnpc movenpc (player)");
         } else {
             Player player = (Player) sender;
-            Utils.sendMessage(player, ConfigValue.MOVE_NPC_MESSAGE);
+            Common.sendMessage(player, ConfigValue.MOVE_NPC_MESSAGE);
             if(player.getInventory().contains(Item.MOVE_ITEM)){
                 return;
             }
@@ -49,16 +50,16 @@ public class MoveNPCCommand extends SubCommand {
         if(args.length == 2 && sender.hasPermission("islandnpc.movenpc.others")){
             Player player = Bukkit.getPlayer(args[1]);
             if(player == null){
-                Utils.sendMessage(sender, ConfigValue.INVALID_PLAYER);
+                Common.sendMessage(sender, ConfigValue.INVALID_PLAYER);
                 return;
             }
-            Utils.sendMessage(player, ConfigValue.MOVE_NPC_MESSAGE);
+            Common.sendMessage(player, ConfigValue.MOVE_NPC_MESSAGE);
             if(player.getInventory().contains(Item.MOVE_ITEM)){
                 return;
             }
             player.getInventory().addItem(Item.MOVE_ITEM);
         } else {
-            Utils.sendMessage(sender, ConfigValue.NO_PERMISSION_MESSAGE);
+            Common.sendMessage(sender, ConfigValue.NO_PERMISSION_MESSAGE);
         }
     }
 

@@ -1,5 +1,7 @@
 package me.aglerr.islandnpc.config;
 
+import me.aglerr.mclibs.libs.CustomConfig;
+
 public class ConfigManager {
 
     public static CustomConfig CONFIG;

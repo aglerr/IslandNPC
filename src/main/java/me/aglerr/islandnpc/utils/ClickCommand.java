@@ -1,5 +1,6 @@
 package me.aglerr.islandnpc.utils;
 
+import me.aglerr.mclibs.libs.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public class ClickCommand {
         List<String> taskList = new ArrayList<>(Arrays.asList(cmds).subList(1, cmds.length));
         String task = cmds.length > 1 ? String.join(" ", taskList) : "";
         // Get the final arguments with parsed placeholder
-        String finalTask = Utils.parsePAPI(player, task
+        String finalTask = Common.tryParsePAPI(player, task
                 .replace("{player}", player.getName()));
         // Check if the tag is console
         if(tag.equalsIgnoreCase("[CONSOLE] ")){
@@ -41,7 +42,7 @@ public class ClickCommand {
         // Check if the tag is message
         if(tag.equalsIgnoreCase("[MESSAGE] ")){
             // Send player a message
-            player.sendMessage(Utils.color(finalTask));
+            player.sendMessage(Common.color(finalTask));
         }
     }
 
