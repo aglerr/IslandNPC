@@ -29,8 +29,8 @@
                             <shadedPattern>me.aglerr.islandnpc.nbtapi</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.cryptomorin.xseries</pattern>
-                            <shadedPattern>me.aglerr.islandnpc.xseries</shadedPattern>
+                            <pattern>me.aglerr.mclibs</pattern>
+                            <shadedPattern>me.aglerr.islandnpc.mclibs</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -76,13 +76,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18-R0.1-SNAPSHOT</version>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblockAPI</artifactId>
-            <version>1.10.1</version>
+            <version>1.10.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>
@@ -92,20 +93,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
             <version>2.9.2</version>
         </dependency>
+
         <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>8.7.1</version>
+            <groupId>me.aglerr.mclibs</groupId>
+            <artifactId>MCLibs</artifactId>
+            <version>0.1.6</version>
         </dependency>
     </dependencies>
 
